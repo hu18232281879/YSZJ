@@ -28,7 +28,6 @@ func (this *UserController) ShowRegister() {
 }
 func (this *UserController) HandleRegister() {
 	phone := this.GetString("phone")
-	fmt.Println(phone)
 	code := this.GetString("code")
 	password := this.GetString("password")
 	repassword := this.GetString("repassword")
@@ -141,7 +140,6 @@ func (this *UserController) HandelActive() {
 		return
 	}
 	result := reg.FindString(email)
-	fmt.Println(result)
 	if result == "" {
 		this.Redirect("/active?id="+strconv.Itoa(id), 302)
 		return
@@ -187,6 +185,12 @@ func (this *UserController) ActivateTheSuccess() {
 	this.Redirect("/login", 302)
 }
 func (this *UserController) ShowLogin() {
+	userName := this.Ctx.GetCookie("userName")
+	if userName != "" {
+		this.Data["userName"] = userName
+	} else {
+		this.Data["userName"] = ""
+	}
 	this.TplName = "login.html"
 }
 func (this *UserController) HandleLogin() {
@@ -213,11 +217,90 @@ func (this *UserController) HandleLogin() {
 		return
 	}
 
-	checked:=this.GetString("m1")
+	checked := this.GetString("m1")
+	if checked == "2" {
+		this.Ctx.SetCookie("userName", loginName, 60*60*24)
+	} else {
+		this.Ctx.SetCookie("userName", loginName, -1)
+	}
+	this.SetSession("pyg_userName", loginName)
+
 	fmt.Println(checked)
 
+	this.Redirect("/?loginName="+loginName, 302)
 
-
+}
+func (this *UserController) LogOut() {
+	this.DelSession("pyg_userName")
 	this.Redirect("/", 302)
+}
+func (this *UserController) ShowUserCenterInfo() {
+	userName := this.GetSession("pyg_userName")
+	if userName == nil {
+		this.Redirect("/", 302)
+		return
+	}
+	o := orm.NewOrm()
+	user := new(models.User)
+	user.Name = userName.(string)
+	err := o.Read(user, "Name")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	addr:=new(models.Address)
+	qs:=o.QueryTable("Address").RelatedSel("User").Filter("User__Name",userName)
+	qs.Filter("Isdefault",true).One(addr)
+	this.Data["userName"] = user.Name
+	this.Data["address"] = *addr
+	this.Data["fileName"] = "info"
+	this.Layout = "userCenter_layout.html"
+	this.TplName = "user_center_info.html"
+}
+func (this *UserController) ShowUserCenterSite() {
+	userName:=this.GetSession("pyg_userName")
+	address:=new(models.Address)
+	o:=orm.NewOrm()
+	qs:=o.QueryTable("Address").RelatedSel("User").Filter("User__Name",userName.(string))
+	qs.Filter("Isdefault",true).One(address)
+	pwdPhone:=address.Phone
+	pwdPhone=pwdPhone[:3]+"****"+pwdPhone[7:]
+	this.Data["fileName"] = "site"
+	this.Data["Receiver"] = address.Receiver
+	this.Data["pwdPhone"] = pwdPhone
+	this.Data["Addr"] = address.Addr
+	this.Layout = "userCenter_layout.html"
+	this.TplName = "user_center_site.html"
+}
+func (this *UserController) AddAddress() {
+	userName := this.GetSession("pyg_userName")
+	receiver := this.GetString("Receiver")
+	Addr := this.GetString("Addr")
+	zipCode := this.GetString("Zipcode")
+	Phone := this.GetString("Phone")
+	if receiver == "" || Addr == "" || zipCode == "" || Phone == "" {
+		this.Redirect("/user/userCenterSite", 302)
+		return
+	}
 
+	address := new(models.Address)
+	o := orm.NewOrm()
+	qs := o.QueryTable("Address").RelatedSel("User").Filter("User__Name", userName.(string))
+	err := qs.Filter("Isdefault", true).One(address)
+	user := new(models.User)
+	user.Name = userName.(string)
+	o.Read(user, "Name")
+	if err == nil {
+		address.Isdefault = false
+		o.Update(address)
+	}
+	newAddress := new(models.Address)
+	newAddress.Receiver = receiver
+	newAddress.Addr = Addr
+	newAddress.Zipcode = zipCode
+	newAddress.Phone = Phone
+	newAddress.Isdefault = true
+	newAddress.User = user
+	o.Insert(newAddress)
+	this.Redirect("/user/userCenterSite",302)
 }
