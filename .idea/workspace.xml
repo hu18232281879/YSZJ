@@ -3,16 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="623982d5-8546-4051-b065-fcd15b3bd9e7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conf/app.conf" beforeDir="false" afterPath="$PROJECT_DIR$/conf/app.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/goodsController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/goodsController.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/userController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/userController.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyg" beforeDir="false" afterPath="$PROJECT_DIR$/pyg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/router.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/user_center_info.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/user_center_info.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/user_center_order.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/user_center_order.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/user_center_site.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/user_center_site.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,7 +31,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/views" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../newsWeb" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
